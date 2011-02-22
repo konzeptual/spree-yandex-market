@@ -39,8 +39,9 @@ namespace :spree do
         tfile = File.new( File.join(directory,tfile_basename), "w+")
         tfile.write(yml_xml)
         tfile.close  
-        # пакуем в gz и делаем симлинк на ссылку файла yandex_market_last.gz
-        `ln -sf "#{tfile.path}" "#{File.join(directory, "#{torgovaya_sistema}.xml")}"`
+        # делаем симлинк на ссылку файла yandex_market.xml
+        system %{ cd #{directory} && 
+                  ln -sf #{tfile_basename} "#{torgovaya_sistema}.xml" }
 
         # Удаляем лишнии файлы
         @config = YandexMarket::Config.instance
