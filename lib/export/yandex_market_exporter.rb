@@ -121,7 +121,7 @@ module Export
         xml.vendor product_properties[@config.preferred_vendor] if product_properties[@config.preferred_vendor]    
         xml.vendorCode product_properties[@config.preferred_vendor_code] if product_properties[@config.preferred_vendor_code]
         xml.model                  product_properties[@config.preferred_model] if product_properties[@config.preferred_model]
-        xml.description            product.description if product.description
+        xml.description         product.description.html_safe.gsub(/<.+?>/, '').gsub(/[\n,\t,\r]/,'') if product.description 
         xml.manufacturer_warranty  !product_properties[@config.preferred_manufacturer_warranty].blank? 
         xml.country_of_origin      product_properties[@config.preferred_country_of_manufacturer] if product_properties[@config.preferred_country_of_manufacturer]
         xml.downloadable false
@@ -139,7 +139,7 @@ module Export
         xml.local_delivery_cost @config.preferred_local_delivery_cost 
         xml.name                product.name
         xml.vendorCode          product_properties[@config.preferred_vendor_code]
-        xml.description         product.description
+        xml.description         product.description.html_safe.gsub(/<.+?>/, '') if product.description #.gsub(/[\n,\t,\r]/,'')
         xml.country_of_origin   product_properties[@config.preferred_country_of_manufacturer]
         xml.downloadable false   
       }
@@ -169,7 +169,7 @@ module Export
         xml.binding product_properties[@config.preferred_binding]
         xml.page_extent product_properties[@config.preferred_page_extent]
         
-        xml.description product.description
+        xml.description         product.description.html_safe.gsub(/<.+?>/, '').gsub(/[\n,\t,\r]/,'') if product.description 
         xml.downloadable false
       }
     end
